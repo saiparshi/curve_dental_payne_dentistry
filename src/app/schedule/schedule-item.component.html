@@ -1,0 +1,13 @@
+<div class="card container">
+  <div class="row align-items-baseline">
+    <div [routerLink]="['/appointments', appointment.id, 'edit']" class="col-3 col-md-5 time">
+      {{formatTime()}}
+    </div>
+    <div [routerLink]="['/patients', appointment.patientId]" class="col-8 col-md-6 name">
+      <div>{{appointment.lastName}}, {{appointment.firstName}}</div>
+    </div>
+    <div class="col-1 float-right">
+      <fa-icon (click)="delete.emit(appointment)" [icon]="deleteIcon"></fa-icon>
+    </div>
+  </div>
+</div>

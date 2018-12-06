@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row justify-content-center align-items-baseline">
+    <h3 class="col-7 col-sm-8 col-md-6">
+      <span class="title">Schedule - {{date?.format('LL')}}</span>
+    </h3>
+    <div class="col-5 col-sm-4 col-md-3">
+      <drp-schedule-nav [date]="date" class="float-right"></drp-schedule-nav>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div *ngIf="!appointments?.length" class="col-12 col-md-9">
+      You have no appointments scheduled.
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div *ngFor="let appointment of appointments" class="col-12 col-md-9">
+       <drp-schedule-item [appointment]=appointment (delete)="deleteAppointment($event)"></drp-schedule-item>
+    </div>
+  </div>
+</div>

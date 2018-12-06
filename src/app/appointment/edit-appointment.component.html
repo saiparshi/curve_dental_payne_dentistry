@@ -1,0 +1,29 @@
+<div>
+  <h3>Appointment</h3>
+  <div class="col-md-6">
+    <div [hidden]="!saveError" class="alert alert-danger" role="alert">
+      {{saveError}}
+    </div>
+    <form [formGroup]="form" (ngSubmit)="saveAppointment(form.value)" autocomplete="off" novalidate>
+      <div class="form-group" [ngClass]="{'error': date.invalid && date.touched}">
+        <label for="date">Date:</label>
+        <em *ngIf="date.invalid && date.touched">Required</em>
+        <input #dateEl formControlName="date" name="date" required id="date" type="date" class="form-control"/>
+      </div>
+      <div class="form-group" [ngClass]="{'error': time.invalid && time.touched}">
+        <label for="time">Time:</label>
+        <em *ngIf="time.invalid && time.touched">Required</em>
+        <input #timeEl formControlName="time" name="time" required id="time" type="time" class="form-control"/>
+      </div>
+      <div class="form-group" [ngClass]="{'error': duration.invalid && duration.touched}">
+        <label for="duration">Duration (minutes):</label>
+        <em *ngIf="duration.invalid && duration.touched && duration.errors?.required">Required</em>
+        <em *ngIf="duration.invalid && duration.touched && duration.errors?.min">Minimum value is 0</em>
+        <em *ngIf="duration.invalid && duration.touched && duration.errors?.min">Maximum value is 1439</em>
+        <input formControlName="duration" name="duration" required id="duration" type="number" min="0" max="1439" class="form-control" />
+      </div>
+      <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+      </form>
+  </div>
+</div>

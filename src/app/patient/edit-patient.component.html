@@ -1,0 +1,27 @@
+<div>
+  <h3>New Patient</h3>
+  <div class="col-md-6">
+    <div [hidden]="!saveError" class="alert alert-danger" role="alert">
+      {{saveError}}
+    </div>
+    <form [formGroup]="form" (ngSubmit)="savePatient(form.value)" autocomplete="off" novalidate>
+      <div class="form-group" [ngClass]="{'error': firstName.invalid && firstName.touched}">
+        <label for="firstName">First Name:</label>
+        <em *ngIf="firstName.invalid && firstName.touched">Required</em>
+        <input formControlName="firstName" name="firstName" required id="firstName" type="text" class="form-control"/>
+      </div>
+      <div class="form-group" [ngClass]="{'error': lastName.invalid && lastName.touched}">
+        <label for="lastName">Last Name:</label>
+        <em *ngIf="lastName.invalid && lastName.touched">Required</em>
+        <input formControlName="lastName" name="lastName" required id="lastName" type="text" class="form-control"/>
+      </div>
+      <div class="form-group" [ngClass]="{'error': birthDate.invalid && birthDate.touched}">
+        <label for="lastName">Birth Date:</label>
+        <em *ngIf="birthDate.invalid && birthDate.touched">Required</em>
+        <input formControlName="birthDate" name="birthDate" required id="birthDate" type="text" class="form-control" placeholder="yyyy-mm-dd"/>
+      </div>
+      <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+      </form>
+  </div>
+</div>
