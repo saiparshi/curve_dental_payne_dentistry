@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const patientsRouter = require('./routes/patients');
 const appointmentsRouter = require('./routes/appointments');
+const blockBookingsRouter = require('./routes/blockBookings');
 const path = require('path');
 const compression = require('compression');
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json({expose: true}));
 
 app.use('/api/patients', patientsRouter);
 app.use('/api/appointments', appointmentsRouter);
+app.use('/api/blockBookings', blockBookingsRouter);
 
 // All other requests to /api return a 404, all other requests to
 // anything but /api return index.html to enable linking directly to

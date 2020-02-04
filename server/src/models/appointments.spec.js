@@ -48,6 +48,24 @@ describe('appointments model', () => {
     expect(appointment.id).toEqual('4');
   });
 
+  it('throws an error when creating an appointment overlapping block booking', async () => {
+    let appointment = {
+      patientId: '3',
+      startTime: moment.utc('2018-10-17T10:20:00Z'),
+      duration: 45
+    };
+    let error = null;
+
+    try {
+      await appointments.create(appointment);
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).not.toBeNull();
+  });
+
+
   it('updates an existing appointment and returns the appointment', async () => {
     let appointment = {
       id: '2',
@@ -90,6 +108,24 @@ describe('appointments model', () => {
       id: '2',
       patientId: '7',
       startTime: moment.utc('2018-04-07T20:00:00Z'),
+      duration: 45
+    };
+    let error = null;
+
+    try {
+      await appointments.update(appointment);
+    } catch (err) {
+      error = err;
+    }
+
+    expect(error).not.toBeNull();
+  });
+
+  it('throws an error when updating an appointment overlapping block booking', async () => {
+    let appointment = {
+      id: '2',
+      patientId: '3',
+      startTime: moment.utc('2018-10-17T10:20:00Z'),
       duration: 45
     };
     let error = null;

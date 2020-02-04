@@ -45,7 +45,7 @@ exports.appointments_create = async function (req, res) {
     let appointment = await appointments.create(request.appointment);
     return res.status(201).json(mapToHttp(appointment));
   } catch (err) {
-    return res.status(400).send();
+    return res.status(400).send(err.message);
   }
 };
 
@@ -54,7 +54,7 @@ exports.appointments_update = async function (req, res) {
   try {
     request = forUpdate(req.params.id, req.body);
   } catch (err) {
-    return res.status(400).send();
+    return res.status(400).send(err.message);
   }
 
   try {
@@ -63,7 +63,9 @@ exports.appointments_update = async function (req, res) {
   } catch (err) {
     if (/no patient with id/.test(err.message)) {
       return res.status(409).send();
-    } 
+    } else if(/Failed to create appointment, overlaps with block booking:/.test(err.message)){
+      return res.status(400).send(err.message);
+    }
     return res.status(404).send();
   }
 };

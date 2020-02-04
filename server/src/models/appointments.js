@@ -1,5 +1,7 @@
 const database = require('./database');
 const moment = require('moment');
+const blockBookingsHelper = require('../helper/blockBookingsHelper');
+const lodash = require('lodash');
 
 /**
  * Persistence layer for appointments
@@ -55,6 +57,10 @@ exports.getBetween = async (start, end) => {
  * @returns { Appointment } Created appointment object with id set
  */
 exports.create = async (appointment) => {
+  var overlapId = await blockBookingsHelper.validateIfOverlapExists(appointment.startTime.format('YYYY-MM-DDTHH:mm:ss\\Z'), appointment.duration);
+  if(!lodash.isEmpty(overlapId)){
+    throw new Error('Failed to create appointment, overlaps with block booking: '+overlapId);
+  }
   const db = database.getDatabase();
   let result = await db.run(
     'INSERT INTO appointments (patient_id, start_time, duration) VALUES ($patientId, $startTime, $duration)', {
@@ -67,6 +73,7 @@ exports.create = async (appointment) => {
     throw new Error('Failed to create appointment');
   }
   appointment.id = '' + result.lastID;
+
   return exports.get('' + result.lastID);
 };
 
@@ -76,6 +83,10 @@ exports.create = async (appointment) => {
  * @throws If no appointment or patient exists with id
  */
 exports.update = async (appointment) => {
+  var overlapId = await blockBookingsHelper.validateIfOverlapExists(appointment.startTime.format('YYYY-MM-DDTHH:mm:ss\\Z'), appointment.duration);
+  if(!lodash.isEmpty(overlapId)){
+    throw new Error('Failed to create appointment, overlaps with block booking: '+overlapId);
+  }
   const db = database.getDatabase();
   let result = null;
   try {

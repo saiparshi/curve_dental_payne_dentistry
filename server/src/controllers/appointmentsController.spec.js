@@ -96,6 +96,13 @@ describe('POST /api/appointments', () => {
       .send({ patientId: '2', startTime: '2018-08-06 18:00:00', duration: 'empty' })
       .expect(400);
   });
+
+  it('returns bad request when request overlapps block boooking', async () => {
+    await request(app)
+      .post('/api/appointments')
+      .send({ patientId: '3', startTime: '2018-09-21T15:10:00.000Z', duration: '45' })
+      .expect(400);
+  });
 });
 
 describe('PUT /api/appointments/:id', () => {
@@ -126,6 +133,13 @@ describe('PUT /api/appointments/:id', () => {
       .put('/api/appointments/2')
       .send({ id: '2', patientId: '7', startTime: '2018-08-06 18:00:00Z', duration: 30 })
       .expect(409);
+  });
+
+  it('returns bad request when request overlapps block boooking', async () => {
+    await request(app)
+      .put('/api/appointments/2')
+      .send({ patientId: '3', startTime: '2018-09-17T15:10:00.000Z', duration: '45' })
+      .expect(400);
   });
 });
 
